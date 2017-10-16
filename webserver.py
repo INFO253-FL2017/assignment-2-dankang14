@@ -45,18 +45,21 @@ def blog_5():
 @app.route('/contact', methods=['POST'])
 def send_email():
  message = request.form.get("message")
+ name = request.form.get("f&lname")
+ subject = request.form.get("subject")
+ email = "Name: " + name + "Subject: " + subject + "Message: " + message
  notifications = []
 
  data = {
         'from': os.environ["INFO253_MAILGUN_FROM_EMAIL"],
         'to': os.environ["INFO253_MAILGUN_TO_EMAIL"],
-        'subject': "You just sent a message",
-        'text': message,
+        'subject': subject,
+        'text': email
     }
  auth = (os.environ["INFO253_MAILGUN_USER"], os.environ["INFO253_MAILGUN_PASSWORD"])
 
  r = requests.post(
-        'https://api.mailgun.net/v3/sandbox83688d43d350464792fc1bc3060d1ba7.mailgun.org/messages'.format(os.environ["INFO253_MAILGUN_DOMAIN"]),
+        'https://api.mailgun.net/v3/{}/messages'.format(os.environ["INFO253_MAILGUN_DOMAIN"]),
         auth=auth,
         data=data)
 
