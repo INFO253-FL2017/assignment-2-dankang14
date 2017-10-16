@@ -1,0 +1,28 @@
+h1, h2, h3{
+	color: blue;
+	text-align: center;
+}
+ul{
+	text-align: left;
+	list-style-position: inside;
+}
+li{
+	list-style-type: square;
+}
+
+header{
+	text-align: center;
+}
+footer{
+	color: blue;
+	text-align: center;
+}
+form{
+	text-align: center;
+}
+ul{
+	text-align: center;
+}
+section{
+	text-align: center;
+}
