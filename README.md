@@ -1,130 +1,108 @@
-# Assignment 2
-## Make your static website dynamic
+# Assignment 3
+Build and consume your own API
 
-Our assignments are going to be built around building a blog from the ground up and eventually hosting your blog in the 
-cloud. For this second assignment, you are going to take the static blog that you have created and host it on a server 
-that you will set up, build, and code yourself. At the end of this assignment you will have used your vagrant box to 
-power a web server that is hosting your very own site!
+In this assignment you will be tasked with creating your very own api, which you will then modify your web server in assignment 2 to use. You will also learn how to connect to a database to insert and retrieve data from a persistent store of information.
 
-You will be using [Flask](http://flask.pocoo.org/)
+What you will be doing is moving the title and content of your blog from your web server to a database. You will be running two servers: a web server that will be hosting your web page as in assignment 2, and a server that will be hosting your API that will be delivering the content of your blog to your web server.
 
-You will need to do the following:
+There are a series of steps that you'll need to complete:
 
-### Install Python 3 to your vagrant box (if you haven't alreaady)
+## Copy your assignment 2 web server code to it's own repository
+While we are grading your assignment 2 code, you will need to modify your web server to call your API to get the title and content of your blog. So your first step is to create your assign-3-webserver repo from the customary link and then copy your assignment 2 code to this repo.
 
-1. Download [miniconda](https://conda.io/miniconda.html) for Linux. Download the right Linux installer (32 bit or 64 bit, depending on your system) and 
-save that file in the i253 folder
-2. Load up your vagrant box and run the 
- - ```bash Miniconda3-latest-Linux-x86_64.sh``` for 64 bit
- - ```bash Miniconda3-latest-Linux-x86.sh``` for 32 
-3. Be sure to type "yes" when asked this question;
- - Do you wish the installer to prepend the Miniconda3 install location to PATH in your /home/vagrant/.bashrc ? [yes|no]
-4. Close out of your vagrant box and enter it again
+## Set up your API in your assign-3-api repo
 
-Now you should be able to type python3 --version and it should specify that you are running python 3.6
-
-### Forward ports from your vagrant box so that you can use your webserver outside your vagrant box (if you haven't already)
-
-1. Open the file "Vagrantfile" located in your i253 folder with a text editor
-2. At the second line from the end (before the word "end") add the following code:
- - ``` 
-    for i in 5000..5010
-        config.vm.network :forwarded_port, guest: i, host: i
-    end
-    ```
-3. Run ```vagrant reload```
-4. Now ports 5000 through 5010 are availiable on your host computer by going to your browser and going to
-http://localhost:5000, http://localhost:5001, and so on to http://localhost:5010
-
-### Clone your repo and run your server
-
-1. Clone your webarch-assign-2 repository inside your vagrant box under /vagrant
-2. Run ```cd webarch-assign-2```
-3. Install all of your requirements by running the command: ```pip install -r requirements.txt ```
-4. Tell your vagrant box where the code to your flask application lives by running the command ```export FLASK_APP=webserver.py```
-5. Run your application by running the command ```flask run --host=0.0.0.0```
-
-You would see your terminal look something like this:
-
-```
-vagrant@precise64:/vagrant/webarch-assign-2$ flask run --host=0.0.0.0
- * Serving Flask app "webserver"
- * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
-10.0.2.2 - - [26/Sep/2017 20:52:10] "GET / HTTP/1.1" 200 -
-```
-
-### Build a web server that serves the HTML pages you created in assignment 1
-You will be wiring up your blog that you have created in assignment 1 to be hosted in your web server. You will need to 
-create routes that tell the server to return the HTML of the page that the user requested. You will need to use the 
-[templates feature](http://flask.pocoo.org/docs/0.12/templating/) of Flask to power these pages.
-
-The following URLs should load the following pages:
-
-1. http://localhost:5000/index -> home page
-2. http://localhost:5000/about -> about us page
-3. http://localhost:5000/contact -> contact us page
-4. http://localhost:5000/blog/8-experiments-in-motivation -> 8 experiments in motivation blog post
-5. http://localhost:5000/blog/a-mindful-shift-of-focus -> A Mindful Shift of Focus blog post
-6. http://localhost:5000/blog/how-to-develop-an-awesome-sense-of-direction -> How to Develop an Awesome Sense of 
-Direction blog post
-7. http://localhost:5000/blog/training-to-be-a-good-writer -> Training to Be a Good Writer blog post
-8. http://localhost:5000/blog/what-productivity-systems-wont-solve -> What Productivity Systems Won't Solve blog post
-
-### Power your contact form to send a real email to yourself
-In this assignment you are going to enable the contact form that you created in assignment 1 and have it send you an 
-actual email. You will do this by having your server send an HTTP POST request to an external API powered by 
-[Mailgun](http://www.mailgun.com). 
-
-You will have to create a free account at [Mailgun](https://signup.mailgun.com/new/signup) and check the documentation 
-to determine how you can send a POST request to Mailgun in order to send an email. Here's the reference for the API and 
-how to use it: [Mailgun API Referefence](https://documentation.mailgun.com/api-sending.html#sending).
-
-**Note:** this must be implemented by using the [requests](http://docs.python-requests.org/en/master/) Python module that 
-is already included in this project. You are not allowed to find another module that integrates Mailgun with Flask
-
-**Note:** your integration with Mailgun needs to be externally configruable. This means that you cannot add your username,
-password, nor recipient directly into the code. It is a security risk to check in passwords directly into code. You must use environment variables in order to achieve this result. 
-
-### Here are the requirements for the contact form:
-
-Your contact form should send an email to your own email with the following information:
-1. Name
-2. Subject
-4. Message
-5. Your contact form should still run the same JavaScript validations that you did in assignment 1. It should not send 
-6 request the server unless all fields are filled out.
-7. Your contact form should send a POST request to the server (not a GET request)
-8. Your contact form should display the name of the person filling out the contact form on successful submission of the 
-form. For example, after someone successfully submits the contact form named Kate, the message should say "Hi Kate, your 
-message has been sent".
-
-### Ensure that your CSS, JavaScript, and images are loading correctly
-
-When moving HTML, CSS, and JavaScript to a web server, there may be issues with ensuring that all of those resources are 
-being accessed properly
-
-1. Ensure that your web page still looks the same as it did in assignment 1 and that your JavaScript is still functional
-
-### Add a LEARNINGS.md file at the root of your repository answering the following questions:
-
- 1. What is the function of the following technologies in your assignment:
-    1. HTML
-    2. CSS
-    3. JavaScript
-    4. Python
-    5. Flask
-    6. HTTP
-    7. GET and POST requests
- 2. How does HTML, CSS, and JavaScript work together in the browser for this assignment?
- 3. How does Python and Flask work together in the server for this assignment?
- 4. List all of the possible GET and POST requests that your server returns a response for and describes what happens for each GET and POST request
-
-## Extra Credit
-1. Add an email field to your contact form and add that information along with your name/subject/message
-2. Add the current weather for Berkeley, CA to each of the five blog posts. You will need to use AJAX to accomplish this. You have freedom where this data can be placed
- 1. **NOTE: This must be done using plain JavaScript. To recieve full credit you cannot include an external library**
- 2. You will need to sign up for an account at [OpenWeatherMap](https://openweathermap.org) and [get an API key](http://openweathermap.org/appid)
- 3. Next you will need to look at [the documentation](http://openweathermap.org/current) to get the weather for Berkeley, CA
- 4. Modify your website to contact OpenWeatherMap to get the latest weather from Berkeley. This must be done on the front end/the browser, so you must use JavaScript that is being run on your browser (think ```<script src="js/script.js"></script>```)
- 5. Display it on each of the five blog posts
+Next you will need to set up your API in a separate repo called assign-3-api. 
  
+**Note:** Be sure to run your server on a different port (other than 5000). If you run two servers on the same port you will get an error during the startup of the second server
+
+**Note:** Your vagrant box has opened ports 5000 - 5010. Choose one of those ports so that you can access your api from your host computer. i.e.:
+
+```
+flask run -h 0.0.0.0 -p 5001
+```
+
+## Create two endpoints to the API in your assign-3-api repo
+
+### POST /blog
+
+You will first create an endpoint with the path /blog that would do the following:
+ - Create a table using sqlite (**only** if it doesn't exist) in a static file with the following fields
+  - **slug**: the unique slug of the blog post. For example, the blog post: A Mindful Shift of Focus should have the slug: a-mindful-shift-of-focus.md
+  - **title**: the title of the blog post. For example for the "A Mindful Shift of Focus.md" post, the title should be: "A Mindful Shift of Focus"
+  - **content**: the content of the blog post. This should contain all of the HTML content that is after the title of your pages. The goal is to grab the content of the blog post from this api instead of hard coding it in your web server.
+ - Accept the following body parameters with content type "application/json":
+  - slug
+  - title
+  - content
+ - Insert the new slug, title, and content into your database
+ 
+### GET /blog
+
+You will then create another post that will send the data of the blog as json
+
+ - It will accept the following query parameters:
+  - slug (i.e. "a-mindful-shift-of-focus")
+ - It will return a json response that will look like the following:
+```json
+  {
+    slug: "a-mindful-shift-of-focus",
+    title: "A Mindful Shift of Focus",
+    content: "<h2>By Leo Laparte</h2>..."
+  }
+```
+
+## Populate your database
+
+You will now need to populate your database by sending POST /blog requests to your API to populate your database. I would suggest creating a json file for each blog post (i.e. "a-mindful-shift-of-focus.json") and writing the contents of a single blog post in the file.
+
+For example, in the file "a-mindful-shift-of-focus.json", the contents could be something like this:
+```json
+  {
+    slug: "a-mindful-shift-of-focus",
+    title: "A Mindful Shift of Focus",
+    content: "<h2>By Leo Laparte</h2>..."
+  }
+```
+You can now use curl to send a request to your api, sending a-mindful-shift-of-focus.json as the data:
+
+```bash
+curl -vX POST https://localhost:5001/blog -d @a-mindful-shift-of-focus.json --header "Content-Type: application/json"
+```
+
+## Modify your assign-3-webserver repo to call your assign-3-api to retrieve the blog information
+
+You will now need to delete all of the hard coded blog content and send a request from your web server to your api to retrieve the blog title and content. You will need the requests module we used for Mailgun to accomplish this. Consider the GET requests that you would need to make in order to retrieve the title and the content data of each blog post.
+
+## Add a LEARNINGS.md file at the root of your repository answering the following questions
+
+ 1. What is the function of the following technologies/concepts in your assignment:
+  1. Web Server
+  2. API
+  3. JSON
+  4. SQLite
+  5. curl
+  6. TCP
+  7. IP
+  8. Content Type
+ 2. How does your web server interact with your API? Talk about both endpoints and how they are used in this assignment
+ 3. Why did we use curl in this assignment?
+ 4. List all of the possible GET and POST requests that are sent and received from both your web server and your API and describe what what sent and received in each request/response
+
+# Extra Credit
+
+Create another web page on your web server with the path "/admin" and create a form where you can dynamically add new blog posts to your blog without editing any more code.
+
+The form should have the following fields:
+ - Slug
+ - Title
+ - Content
+ 
+This form should be submitted to the web server, and the web server will need to use the POST /blog endpoint in order to modify the database. After this change the web server should be able to view the new blog post.
+
+For example, if a user submitted the form with the content:
+ - Slug: test-blog-post
+ - Title: Test blog post
+ - Content: ```<h1>This is my first dynamic blog post</h1>```
+ 
+Then if the same user went to http://localhost:5000/test-blog-post, they should see a blog post with Title "Test blog post" and with the content ```<h1>This is my first dynamic blog post</h1>```
